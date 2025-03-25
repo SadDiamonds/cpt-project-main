@@ -488,7 +488,7 @@ GameObject:
   - component: {fileID: 70914436}
   - component: {fileID: 70914435}
   - component: {fileID: 70914439}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1764,7 +1764,7 @@ MeshRenderer:
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
+  m_ScaleInLightmap: 0
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
@@ -1788,7 +1788,7 @@ Transform:
   m_GameObject: {fileID: 70914434}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.792447, y: -33.987164, z: 5.8092346}
+  m_LocalPosition: {x: -3.792447, y: -34.11, z: 5.8092346}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7993,7 +7993,7 @@ GameObject:
   - component: {fileID: 472570038}
   - component: {fileID: 472570037}
   - component: {fileID: 472570036}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9380,7 +9380,7 @@ GameObject:
   - component: {fileID: 569528624}
   - component: {fileID: 569528623}
   - component: {fileID: 569528622}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11616,7 +11616,7 @@ GameObject:
   - component: {fileID: 1021151750}
   - component: {fileID: 1021151749}
   - component: {fileID: 1021151748}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14020,7 +14020,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -17225,7 +17225,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -17758,7 +17758,7 @@ GameObject:
   - component: {fileID: 1877011838}
   - component: {fileID: 1877011837}
   - component: {fileID: 1877011836}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18275,7 +18275,7 @@ GameObject:
   - component: {fileID: 1906258688}
   - component: {fileID: 1906258687}
   - component: {fileID: 1906258691}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: New Game Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19685,7 +19685,7 @@ MeshRenderer:
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
+  m_ScaleInLightmap: 0
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
@@ -19709,8 +19709,8 @@ Transform:
   m_GameObject: {fileID: 1906258686}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.797, y: -29.514608, z: 0.2577}
-  m_LocalScale: {x: 1.007427, y: 1, z: 1.0098109}
+  m_LocalPosition: {x: -4.7835, y: -29.64, z: 0.2809}
+  m_LocalScale: {x: 1.0332171, y: 1, z: 1.0019791}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
