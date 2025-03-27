@@ -184,6 +184,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 		{
 			state = MovementState.wallrunning;
 			desiredMoveSpeed = wallRunSpeed;
+			speedChangeFactor = speedIncreaseMultiplier;
 		}
 		// Mode - Sliding
 		else if (sliding)
@@ -209,7 +210,6 @@ public class PlayerMovementAdvanced : MonoBehaviour
 		{
 			state = MovementState.sprinting;
 			desiredMoveSpeed = sprintSpeed;
-
 		}
 
 		// Mode - Walking
