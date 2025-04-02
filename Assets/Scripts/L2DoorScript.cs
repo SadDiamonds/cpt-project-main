@@ -7,6 +7,9 @@ public class DoorController : MonoBehaviour
     public int totalButtons = 3;
     public TextMeshPro buttonCounterText; // Reference to the 3D sign text
     public Lever lever; // Reference to the lever
+    public Animator doorAnimator; // Reference to the door's Animator
+    public string doorOpenTrigger = "Open"; // Name of the trigger parameter in Animator
+    private bool isDoorOpen = false;
 
     private void Start()
     {
@@ -28,6 +31,22 @@ public class DoorController : MonoBehaviour
         if (buttonCounterText != null)
         {
             buttonCounterText.text = buttonsPressed + "/" + totalButtons + " Buttons Pressed";
+        }
+    }
+
+    public void OpenDoor()
+    {
+        if (!isDoorOpen)
+        {
+            isDoorOpen = true;
+            if (doorAnimator != null)
+            {
+                doorAnimator.SetTrigger(doorOpenTrigger); // Trigger the door opening animation
+            }
+            else
+            {
+                Debug.LogError("Door Animator is not assigned!");
+            }
         }
     }
 }

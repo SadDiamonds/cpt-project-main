@@ -48,20 +48,20 @@ public class PlayerCam : MonoBehaviour
 
     private void HandleMouseLook()
     {
-        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        // Get mouse input without deltaTime
+        float mouseX = Input.GetAxisRaw("Mouse X") * sensX;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * sensY;
 
+        // Apply smooth mouse rotation
         yRotation += mouseX;
         xRotation -= mouseY;
 
-        // Clamp vertical rotation
+        // Clamp vertical rotation to avoid flipping
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        // Combine tilt and mouse rotations here
+        // Apply rotation smoothly
         transform.localRotation = Quaternion.Euler(xRotation, yRotation, zTilt);
-
-        // Rotate orientation around Y for movement
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0); // Only rotate around Y for orientation
     }
 
     private void AdjustFOV()
