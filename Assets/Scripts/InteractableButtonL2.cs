@@ -1,31 +1,43 @@
 using UnityEngine;
+using TMPro;
 
 public class InteractableButton : MonoBehaviour
 {
     private Renderer buttonRenderer;
-    private Animator buttonAnimator; // Animator reference
+    private Animator buttonAnimator;
     public bool isActivated = false;
     private bool playerNearby = false;
-    public DoorController doorController; // Reference to the door
+    public TextMeshProUGUI interactText;
+    public DoorController doorController;
+
+    public Transform buttonPart; // Assign in Inspector (button object with Animator)
 
     private void Start()
     {
-        buttonRenderer = GetComponent<Renderer>(); // Find Renderer
-        buttonAnimator = GetComponent<Animator>(); // Find Animator
+        interactText.gameObject.SetActive(false);
+
+        // Get Renderer and Animator from buttonPart
+        if (buttonPart != null)
+        {
+            buttonRenderer = buttonPart.GetComponent<Renderer>();
+            buttonAnimator = buttonPart.GetComponent<Animator>();
+        }
 
         if (buttonRenderer == null)
         {
-            Debug.LogError("No Renderer found on " + gameObject.name + ". Make sure the object has a Mesh Renderer.");
+            Debug.LogError("No Renderer found on " + buttonPart.name + ". Make sure it has a Mesh Renderer.");
         }
         if (buttonAnimator == null)
         {
-            Debug.LogError("No Animator found on " + gameObject.name + ". Make sure it has an Animator.");
+            Debug.LogError("No Animator found on " + buttonPart.name + ". Make sure it has an Animator.");
         }
 
-        // Make sure button starts unpressed and green
-        buttonRenderer.material.color = Color.white; // Set button color back to normal
+        // Make sure button starts unpressed and white
+        if (buttonRenderer != null)
+        {
+            buttonRenderer.material.color = Color.white;
+        }
     }
-
 
     private void Update()
     {
@@ -38,9 +50,33 @@ public class InteractableButton : MonoBehaviour
     private void ActivateButton()
     {
         isActivated = true;
-        buttonAnimator.Play("ButtonPress"); // Play animation
-        doorController.ButtonPressed(); // Notify door
-        buttonRenderer.material.color = Color.green; // Change to green
+
+        // Debug Log to check if animation is triggered
+        Debug.Log("Trying to Play Animation on " + buttonPart.name);
+
+        if (buttonAnimator != null)
+        {
+            // Play animation directly (ensure animation name matches the one in Animator)
+            buttonAnimator.Play("ButtonDownAnim", 0, 0f); // Force play from start
+
+            // Alternative: If using trigger-based transitions in Animator
+            // buttonAnimator.SetTrigger("Press");
+        }
+        else
+        {
+            Debug.LogError("Animator not found on buttonPart!");
+        }
+
+        if (doorController != null)
+        {
+            doorController.ButtonPressed(); // Notify door
+        }
+
+        if (buttonRenderer != null)
+        {
+            buttonRenderer.material.color = Color.green; // Change button color
+        }
+
         Debug.Log("Button Pressed!");
     }
 
@@ -49,6 +85,7 @@ public class InteractableButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearby = true;
+            interactText.gameObject.SetActive(true);
         }
     }
 
@@ -57,6 +94,7 @@ public class InteractableButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNearby = false;
+            interactText.gameObject.SetActive(false);
         }
     }
 }
