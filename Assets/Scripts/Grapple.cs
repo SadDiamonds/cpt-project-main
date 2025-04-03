@@ -27,6 +27,8 @@ public class Grappling : MonoBehaviour
 
     private bool grappling;
 
+    public bool hasGrapple = false;
+
     private void Start()
     {
         pm = GetComponent<PlayerMovementAdvanced>();
@@ -34,6 +36,9 @@ public class Grappling : MonoBehaviour
 
     private void Update()
     {
+        if (!hasGrapple) return;
+
+
         if (Input.GetKeyDown(grappleKey)) StartGrapple();
 
         if (grapplingCdTimer > 0)
@@ -48,7 +53,10 @@ public class Grappling : MonoBehaviour
 
     private void StartGrapple()
     {
+
         if (grapplingCdTimer > 0) return;
+
+        GetComponent<Swinging>().StopSwing();
 
         grappling = true;
 

@@ -14,6 +14,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 	public float sprintSpeed;
 	public float slideSpeed;
 	public float wallRunSpeed;
+	public float swingSpeed;
 
 	public float dashSpeed;
 	public float dashSpeedChangeFactor;
@@ -71,6 +72,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 		walking,
 		freeze,
 		unlimited,
+		swinging,
 		sprinting,
 		climbing,
 		dashing,
@@ -87,6 +89,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 	public bool dashing;
 
 	public bool freeze;
+	public bool swinging;
 	public bool activeGrapple;
 	public bool unlimited;
 
@@ -173,6 +176,12 @@ public class PlayerMovementAdvanced : MonoBehaviour
 			state = MovementState.unlimited;
 			moveSpeed = 999f;
 			return;
+		}
+
+		else if (swinging)
+		{
+			state = MovementState.swinging;
+			moveSpeed = swingSpeed;
 		}
 
 		else if (dashing)
@@ -298,6 +307,8 @@ public class PlayerMovementAdvanced : MonoBehaviour
 	{
 		if (activeGrapple) return;
 
+		if (swinging) return;
+
 		if (restricted) return;
 
 		if (state == MovementState.dashing) return;
@@ -368,19 +379,39 @@ public class PlayerMovementAdvanced : MonoBehaviour
 		exitingSlope = false;
 	}
 
+	private bool enabledMovementOnNextTouch;
 	public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
 	{
 		activeGrapple = true;
 		
 		velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
 		Invoke(nameof(SetVelocity), 0.1f);
+
+		Invoke(nameof(ResetRestrictions), 3f);
 	}
 
 	private Vector3 velocityToSet;
 	private void SetVelocity()
 	{
+		enabledMovementOnNextTouch = true;
 		rb.velocity = velocityToSet;
 	}
+
+	public void ResetRestrictions()
+	{
+		activeGrapple = false;
+	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+        if (enabledMovementOnNextTouch)
+        {
+			enabledMovementOnNextTouch = false;
+			ResetRestrictions();
+
+			GetComponent<Grappling>().StopGrapple();
+        }
+    }
 
 	public bool OnSlope()
 	{
