@@ -22,6 +22,11 @@ public class Grappling : MonoBehaviour
     public float grapplingCd;
     private float grapplingCdTimer;
 
+    [Header("Prediction")]
+    public RaycastHit predictionHit;
+    public float predictionSphereCastRadius;
+    public Transform predictionPoint;
+
     [Header("Input")]
     public KeyCode grappleKey = KeyCode.Mouse1;
 
@@ -38,6 +43,7 @@ public class Grappling : MonoBehaviour
     {
         if (!hasGrapple) return;
 
+        CheckForSwingPoints();
 
         if (Input.GetKeyDown(grappleKey)) StartGrapple();
 
@@ -49,6 +55,47 @@ public class Grappling : MonoBehaviour
     {
         if (grappling)
             lr.SetPosition(0, gunTip.position);
+    }
+
+    private void CheckForSwingPoints()
+    {
+        
+
+        RaycastHit sphereCastHit;
+        Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward,
+                            out sphereCastHit, maxGrappleDistance, whatIsGrappleable);
+
+        RaycastHit raycastHit;
+        Physics.Raycast(cam.position, cam.forward,
+                            out raycastHit, maxGrappleDistance, whatIsGrappleable);
+
+        Vector3 realHitPoint;
+
+        // Option 1 - Direct Hit
+        if (raycastHit.point != Vector3.zero)
+            realHitPoint = raycastHit.point;
+
+        // Option 2 - Indirect (predicted) Hit
+        else if (sphereCastHit.point != Vector3.zero)
+            realHitPoint = sphereCastHit.point;
+
+        // Option 3 - Miss
+        else
+            realHitPoint = Vector3.zero;
+
+        // realHitPoint found
+        if (realHitPoint != Vector3.zero)
+        {
+            predictionPoint.gameObject.SetActive(true);
+            predictionPoint.position = realHitPoint;
+        }
+        // realHitPoint not found
+        else
+        {
+            predictionPoint.gameObject.SetActive(false);
+        }
+
+        predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
     }
 
     private void StartGrapple()
