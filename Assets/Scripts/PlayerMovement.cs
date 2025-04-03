@@ -87,6 +87,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 	public bool dashing;
 
 	public bool freeze;
+	public bool activeGrapple;
 	public bool unlimited;
 
 	public bool restricted;
@@ -112,7 +113,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 		ApplyExtraGravity();
 
 		// handle drag
-		if (state == MovementState.walking || state == MovementState.sprinting || state == MovementState.crouching)
+		if (state == MovementState.walking || state == MovementState.sprinting || state == MovementState.crouching && !activeGrapple)
 			rb.drag = groundDrag;
 		else
 			rb.drag = 0;
@@ -162,6 +163,7 @@ public class PlayerMovementAdvanced : MonoBehaviour
 		if (freeze)
 		{
 			state = MovementState.freeze;
+			moveSpeed = 0;
 			rb.velocity = Vector3.zero;
 
 		}
@@ -294,6 +296,8 @@ public class PlayerMovementAdvanced : MonoBehaviour
 
 	private void MovePlayer()
 	{
+		if (activeGrapple) return;
+
 		if (restricted) return;
 
 		if (state == MovementState.dashing) return;
@@ -325,6 +329,8 @@ public class PlayerMovementAdvanced : MonoBehaviour
 
 	private void SpeedControl()
 	{
+		if (activeGrapple) return;
+
 		// limiting speed on slope
 		if (OnSlope() && !exitingSlope)
 		{
@@ -360,6 +366,20 @@ public class PlayerMovementAdvanced : MonoBehaviour
 		readyToJump = true;
 
 		exitingSlope = false;
+	}
+
+	public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
+	{
+		activeGrapple = true;
+		
+		velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+		Invoke(nameof(SetVelocity), 0.1f);
+	}
+
+	private Vector3 velocityToSet;
+	private void SetVelocity()
+	{
+		rb.velocity = velocityToSet;
 	}
 
 	public bool OnSlope()
@@ -400,5 +420,17 @@ public class PlayerMovementAdvanced : MonoBehaviour
         }
     }
 
+	public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
+	{
+		float gravity = Physics.gravity.y;
+		float displacementY = endPoint.y - startPoint.y;
+		Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
 
+		Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * gravity * trajectoryHeight);
+		Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2 * trajectoryHeight/gravity)
+			 + Mathf.Sqrt(2 * (displacementY - trajectoryHeight)/gravity));
+
+		return velocityXZ + velocityY;
+		
+	}
 }
